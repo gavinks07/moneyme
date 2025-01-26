@@ -1,20 +1,16 @@
 {
   "name": "Money Me",
-  "short_name": "MoneyMe",
-  "start_url": "./",
+  "short_name": "Money Me",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#4CAF50",
+  "background_color": "#8dc7ff",
   "theme_color": "#4CAF50",
+  "description": "Track your earnings in real-time.",
   "icons": [
     {
-      "src": "icon-192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
       "src": "icon-512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }
