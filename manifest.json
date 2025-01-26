@@ -1,16 +1,16 @@
 {
-  "name": "Money Me",
-  "short_name": "Money Me",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#8dc7ff",
-  "theme_color": "#4CAF50",
-  "description": "Track your earnings in real-time.",
-  "icons": [
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+    "name": "Money Me",
+    "short_name": "Money Me",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#8dc7ff",
+    "theme_color": "#4CAF50",
+    "description": "Track your earnings in real-time based on an hourly rate.",
+    "icons": [
+        {
+            "src": "icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
 }
