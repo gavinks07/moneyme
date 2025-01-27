@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="description" content="MoneyMe - Track your earnings in real-time with a stopwatch">
     <link rel="manifest" href="manifest.json">
     <title>MoneyMe</title>
@@ -73,6 +73,38 @@
         }
         .non-essential {
             display: block; /* Default to visible in portrait mode */
+        }
+
+        /* Landscape-specific styling */
+        @media (orientation: landscape) {
+            body {
+                background-color: #2a9d8f;
+            }
+            #app-container {
+                transform: scale(1.2);
+            }
+            .container {
+                background-color: #ffffff;
+                color: #264653;
+                padding: 30px;
+                border-radius: 15px;
+                width: 80%;
+            }
+            #earnings-container p,
+            #timer-container p {
+                font-size: 2em;
+                font-weight: bold;
+                color: #e76f51;
+                animation: pop 1s infinite alternate ease-in-out;
+            }
+            @keyframes pop {
+                from {
+                    transform: scale(1);
+                }
+                to {
+                    transform: scale(1.05);
+                }
+            }
         }
     </style>
 </head>
