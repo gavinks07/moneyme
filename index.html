@@ -68,35 +68,34 @@
             color: #6a287e;
         }
         #app-container {
-    text-align: center;
-    transition: all 0.3s ease; /* Smooth transition when changing layouts */
-}
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .non-essential {
+            display: block; /* Default to visible in portrait mode */
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container" id="app-container">
         <h1>Money Me</h1>
-        <label for="hourlyRate">Hourly Rate ($):</label>
-        <input type="number" id="hourlyRate" placeholder="Enter your hourly rate" step="0.001">
-
-        <label for="clockInTime">Optional Clock-In Time:</label>
-        <input type="time" id="clockInTime">
-
-        <button id="startStopButton">Start</button>
-        <button id="resetButton">Reset</button>
-
-        <div class="output">
-            <p>Earnings: $<span id="earnings">0.000</span></p>
-            <p class="time">Time Elapsed: <span id="timeElapsed">0:00:00</span></p>
+        <!-- Non-essential items visible in portrait mode -->
+        <div class="non-essential">
+            <label for="hourlyRate">Hourly Rate ($):</label>
+            <input type="number" id="hourlyRate" placeholder="Enter your hourly rate" step="0.001">
+            <label for="clockInTime">Optional Clock-In Time:</label>
+            <input type="time" id="clockInTime">
+            <button id="startStopButton">Start</button>
+            <button id="resetButton">Reset</button>
         </div>
-        <div id="app-container">
-    <div id="timer-container">Time: <span id="elapsed-time">0.000</span></div>
-    <div id="earnings-container">Earnings: $<span id="earnings">0.000</span></div>
-    <!-- Mark optional items as non-essential -->
-    <div class="non-essential">
-        <!-- Hourly rate input and buttons here -->
-    </div>
-</div>
+
+        <!-- Earnings and Time -->
+        <div id="timer-container">
+            <p>Time Elapsed: <span id="timeElapsed">0:00:00</span></p>
+        </div>
+        <div id="earnings-container">
+            <p>Earnings: $<span id="earningsLandscape">0.000</span></p>
+        </div>
     </div>
 
     <script>
@@ -108,9 +107,10 @@
         const clockInTimeInput = document.getElementById('clockInTime');
         const startStopButton = document.getElementById('startStopButton');
         const resetButton = document.getElementById('resetButton');
-        const earningsDisplay = document.getElementById('earnings');
+        const earningsDisplay = document.getElementById('earningsLandscape');
         const timeElapsedDisplay = document.getElementById('timeElapsed');
 
+        // Function to calculate earnings
         function calculateEarnings() {
             const hourlyRate = parseFloat(hourlyRateInput.value);
             if (!hourlyRate || isNaN(hourlyRate)) return;
@@ -123,11 +123,11 @@
             const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
 
             timeElapsedDisplay.textContent = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
             const earnings = (elapsed / (1000 * 60 * 60)) * hourlyRate;
             earningsDisplay.textContent = earnings.toFixed(3);
         }
 
+        // Start/Stop button functionality
         startStopButton.addEventListener('click', () => {
             if (running) {
                 clearInterval(intervalId);
@@ -142,12 +142,13 @@
                 } else {
                     startTime = new Date().getTime();
                 }
-                intervalId = setInterval(calculateEarnings, 1);
+                intervalId = setInterval(calculateEarnings, 1000);
                 startStopButton.textContent = 'Stop';
                 running = true;
             }
         });
 
+        // Reset button functionality
         resetButton.addEventListener('click', () => {
             clearInterval(intervalId);
             running = false;
@@ -157,53 +158,20 @@
             clockInTimeInput.value = '';
         });
 
-        // below this is the code for the landscape feature
-                function updateLayoutBasedOnOrientation() {
-        const isLandscape = window.matchMedia("(orientation: landscape)").matches;
-        const appContainer = document.getElementById("app-container");
-        const timerContainer = document.getElementById("timer-container");
-        const earningsContainer = document.getElementById("earnings-container");
-    
-        if (isLandscape) {
-            // Simplify layout for landscape
-            appContainer.style.display = "flex";
-            appContainer.style.flexDirection = "column";
-            appContainer.style.alignItems = "center";
-            appContainer.style.justifyContent = "center";
-            timerContainer.style.fontSize = "3em";
-            earningsContainer.style.fontSize = "3em";
-            
-            // Hide non-essential elements
-            document.querySelectorAll(".non-essential").forEach((el) => {
-                el.style.display = "none";
-            });
-        } else {
-            // Restore normal layout for portrait
-            appContainer.style.display = ""; // Reset to default
-            timerContainer.style.fontSize = "";
-            earningsContainer.style.fontSize = "";
-    
-            // Show non-essential elements
-            document.querySelectorAll(".non-essential").forEach((el) => {
-                el.style.display = "";
-            });
-        }
-    }
-    
-    // Listen for orientation changes
-    window.addEventListener("resize", updateLayoutBasedOnOrientation);
-    
-    // Initial layout check
-    updateLayoutBasedOnOrientation();
+        // Orientation-based layout adjustment
+        function updateLayoutBasedOnOrientation() {
+            const isLandscape = window.matchMedia("(orientation: landscape)").matches;
 
+            if (isLandscape) {
+                document.querySelectorAll(".non-essential").forEach(el => el.style.display = "none");
+            } else {
+                document.querySelectorAll(".non-essential").forEach(el => el.style.display = "block");
+            }
+        }
+
+        // Listen for orientation changes
+        window.addEventListener("resize", updateLayoutBasedOnOrientation);
+        updateLayoutBasedOnOrientation();
     </script>
-    <!-- below this is what registers the service worker -->
-    <script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('service-worker.js')
-            .then(() => console.log('Service Worker Registered'))
-            .catch((error) => console.error('Service Worker Registration Failed', error));
-    }
-</script>
 </body>
 </html>
